@@ -28,7 +28,6 @@ let categories = [];
  *
  * Returns array of category ids
  */
-
 async function getCategoryIds() {
   // ask for 100 categories [most we can ask for], so we can pick random
   let response = await axios.get(`${BASE_API_URL}categories`, {
@@ -49,7 +48,6 @@ async function getCategoryIds() {
  *      ...
  *   ]
  */
-
 async function getCategory(catId) {
   let response = await axios.get(`${BASE_API_URL}category`, {
     params: { id: catId }
@@ -68,9 +66,8 @@ async function getCategory(catId) {
  * - The <thead> should be filled w/a <tr>, and a <td> for each category
  * - The <tbody> should be filled w/NUM_QUESTIONS_PER_CAT <tr>s,
  *   each with a question for each category in a <td>
- *   (initally, just show a "?" where the question/answer would go.)
+ *   (initially, just show a "?" where the question/answer would go.)
  */
-
 async function fillTable() {
   hideLoadingView();
 
@@ -103,7 +100,6 @@ async function fillTable() {
  * - if currently "question", show answer & set .showing to "answer"
  * - if currently "answer", ignore click
  * */
-
 function handleClick(evt) {
   let $tgt = $(evt.target);
   let id = $tgt.attr("id");
@@ -131,7 +127,6 @@ function handleClick(evt) {
 /** Wipe the current Jeopardy board, show the loading spinner,
  * and update the button used to fetch data.
  */
-
 function showLoadingView() {
   // clear the board
   $("#jeopardy thead").empty();
@@ -145,7 +140,6 @@ function showLoadingView() {
 }
 
 /** Remove the loading spinner and update the button used to fetch data. */
-
 function hideLoadingView() {
   $("#start")
     .removeClass("disabled")
@@ -159,7 +153,6 @@ function hideLoadingView() {
  * - get data for each category
  * - create HTML table
  * */
-
 async function setupAndStart() {
   let isLoading = $("#start").text() === "Loading...";
 
@@ -174,16 +167,18 @@ async function setupAndStart() {
       categories.push(await getCategory(catId));
     }
 
-    fillTable();
+    // Add a 3-second delay before showing the table
+    setTimeout(() => {
+      fillTable();
+    }, 3000); // 3-second delay
   }
 }
 
 /** On click of start / restart button, set up game. */
-
 $("#start").on("click", setupAndStart);
 
 /** On page load, add event handler for clicking clues */
-
 $(async function() {
   $("#jeopardy").on("click", "td", handleClick);
 });
+
